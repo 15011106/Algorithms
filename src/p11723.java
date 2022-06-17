@@ -5,12 +5,12 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.StringTokenizer;
 
-public class string4 {
+public class p11723 {
     public static void main(String[] args) throws IOException {
 
         BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st;
-        StringBuilder sb = new StringBuilder();;
+        StringBuilder sb;
         int num = 0;
         int ans = 0;
 
@@ -20,6 +20,7 @@ public class string4 {
             st = new StringTokenizer(bf.readLine());
 
             String o = st.nextToken();
+            sb = new StringBuilder();
             if (st.hasMoreTokens()) {
                 num = Integer.parseInt(st.nextToken());
             }
@@ -35,7 +36,8 @@ public class string4 {
                     break;
 
                 case "check":
-                    sb.append((ans & (1 << num)) >> num).append('\n');
+                    sb.append((ans & (1 << num)) >> num);
+                    sb.append("\n");
                     break;
 
                 case "toggle":
@@ -51,8 +53,8 @@ public class string4 {
                     break;
             }
 
-        }
-        System.out.println(sb);
 
+            System.out.print(sb);
+        }
     }
 }

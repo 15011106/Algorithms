@@ -16,8 +16,8 @@ public class p1002 {
             int x2 = Integer.parseInt(st.nextToken());
             int y2 = Integer.parseInt(st.nextToken());
             int r2 = Integer.parseInt(st.nextToken());
-            int dx = (int) Math.pow(x2 - x1, 2.0);
-            int dy = (int) Math.pow(y2 - y1, 2.0);
+            int dx = (int) Math.pow(x2 - x1, 2);
+            int dy = (int) Math.pow(y2 - y1, 2);
 
             double d =  Math.sqrt(dx + dy);
 
