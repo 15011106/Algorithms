@@ -1,49 +1,45 @@
 type MinStack struct {
-    item []int
+    items     []int
+    minValues []int 
 }
 
-
 func Constructor() MinStack {
-    
     return MinStack{}
 }
 
-func (this *MinStack) Push(val int)  {
+func (this *MinStack) Push(val int) {
 
-    this.item = append(this.item, val)
+    this.items = append(this.items, val)
     
+    if len(this.minValues) == 0 || val <= this.minValues[len(this.minValues)-1] {
+        this.minValues = append(this.minValues, val)
+    }
 }
 
+func (this *MinStack) Pop() {
+    if len(this.items) == 0 {
+        return
+    }
 
-func (this *MinStack) Pop()  {
-    this.item = this.item[0:len(this.item)-1]
+    popped := this.items[len(this.items)-1]
+    this.items = this.items[:len(this.items)-1]
+    
+
+    if popped == this.minValues[len(this.minValues)-1] {
+        this.minValues = this.minValues[:len(this.minValues)-1]
+    }
 }
-
 
 func (this *MinStack) Top() int {
-    
-    return this.item[len(this.item)-1]
-
+    if len(this.items) == 0 {
+        return 0
+    }
+    return this.items[len(this.items)-1]
 }
-
 
 func (this *MinStack) GetMin() int {
-
-    min := this.item[0]
-    for _, v := range this.item{
-        if min > v{
-            min = v
-        }
+    if len(this.minValues) == 0 {
+        return 0 
     }
-    return min
+    return this.minValues[len(this.minValues)-1]
 }
-
-
-/**
- * Your MinStack object will be instantiated and called as such:
- * obj := Constructor();
- * obj.Push(val);
- * obj.Pop();
- * param_3 := obj.Top();
- * param_4 := obj.GetMin();
- */
