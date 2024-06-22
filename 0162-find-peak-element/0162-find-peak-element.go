@@ -7,13 +7,13 @@ func findPeakElement(nums []int) int {
         return 0
     }
 
-    for low <= high{
+    for low < high{
         mid := (low + high)/2
         if nums[mid] < nums[mid+1]{
             low = mid + 1
         }else{
-            high = mid - 1
-        }
+            high = mid
+            }
     }
 
  return low   
