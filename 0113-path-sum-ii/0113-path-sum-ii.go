@@ -26,7 +26,6 @@ func dfs(root *TreeNode, curNode []int, targetSum int){
 			copy(targetArr, curNode)
 			ans = append(ans, targetArr)
 		}
-		return
 	}
 
 	if root != nil{
