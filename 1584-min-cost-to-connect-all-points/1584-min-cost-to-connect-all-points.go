@@ -1,75 +1,80 @@
+
 type Edge struct {
-	src, dest, weight int
+	src  Point
+	dst  Point
+	cost int
 }
 
-type Subset struct {
-	parent, rank int
+type Point struct {
+	x, y int
 }
 
-func find(subsets []Subset, i int) int {
-	if subsets[i].parent != i {
-		subsets[i].parent = find(subsets, subsets[i].parent)
-	}
-	return subsets[i].parent
+func manhattanDist(p1, p2 Point) int {
+	return int(math.Abs(float64(p1.x-p2.x)) + math.Abs(float64(p1.y-p2.y)))
 }
 
-func union(subsets []Subset, x, y int) {
-	rootX := find(subsets, x)
-	rootY := find(subsets, y)
+type PriorityQueue []Edge
 
-	if subsets[rootX].rank < subsets[rootY].rank {
-		subsets[rootX].parent = rootY
-	} else if subsets[rootX].rank > subsets[rootY].rank {
-		subsets[rootY].parent = rootX
-	} else {
-		subsets[rootX].parent = rootY
-		subsets[rootY].rank++
-	}
+func (pq PriorityQueue) Swap(i, j int) {
+	pq[i], pq[j] = pq[j], pq[i]
+}
+func (pq PriorityQueue) Less(i, j int) bool {
+		return pq[i].cost < pq[j].cost
+}
+func (pq PriorityQueue) Len() int {
+	return len(pq)
 }
 
-
-func manhattanDistance(p1, p2 []int) int {
-    return abs(p1[0]-p2[0]) + abs(p1[1]-p2[1])
+func (pq *PriorityQueue) Push(x interface{}) {
+	*pq = append(*pq, x.(Edge))
 }
 
-func abs(x int) int {
-    if x < 0 {
-        return -x
-    }
-    return x
+func (pq *PriorityQueue) Pop() (x interface{}) {
+    old := *pq
+    n := len(old)
+    item := old[n-1]
+    *pq = old[0 : n-1]
+    return item
 }
 
 func minCostConnectPoints(points [][]int) int {
-  	var edges []Edge
 	n := len(points)
+	if n == 0 {
+		return 0
+	}
 
-	for i := 0; i < n; i++ {
-		for j := i + 1; j < n; j++ {
-			weight := manhattanDistance(points[i], points[j])
-			edges = append(edges, Edge{i, j, weight})
+    visited := make(map[Point]bool)
+    pq := &PriorityQueue{}
+    heap.Init(pq)
+
+    startPoint := Point{points[0][0], points[0][1]}
+    visited[startPoint] = true
+
+	for i := 1; i < n; i++ {
+        dstPoint := Point{points[i][0], points[i][1]}
+        cost := manhattanDist(startPoint, dstPoint)
+        heap.Push(pq, Edge{src: startPoint, dst: dstPoint, cost: cost})
+    }
+
+	totalCost := 0
+
+	for pq.Len() > 0 {
+		edge := heap.Pop(pq).(Edge)
+
+		if visited[edge.dst] {
+			continue
+		}
+
+		totalCost += edge.cost
+		visited[edge.dst] = true
+
+		for _, point := range points {
+            dstPoint := Point{point[0], point[1]}
+			if !visited[dstPoint] {
+				heap.Push(pq, Edge{src: edge.dst, dst: dstPoint, cost: manhattanDist(edge.dst, dstPoint)})
+			}
 		}
 	}
 
-    sort.Slice(edges, func(i,j int) bool{
-		return edges[i].weight < edges[j].weight
-    })
-    
-    subsets := make([]Subset, n)
-
-    for i := range subsets {
-		subsets[i] = Subset{i, 0}
-	}
-
-    minCost := 0
-
-	for _, edge := range edges {
-		x := find(subsets, edge.src)
-		y := find(subsets, edge.dest)
-
-		if x != y {
-			minCost += edge.weight
-			union(subsets, x, y)
-		}
-	} 
-    return minCost
+	return totalCost
 }
