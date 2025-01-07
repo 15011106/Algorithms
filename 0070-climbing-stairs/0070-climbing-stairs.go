@@ -1,15 +1,16 @@
 func climbStairs(n int) int {
-     if n <= 2 {
-        return n
+
+    if n == 1{
+        return 1
     }
-    
-    dp := make([]int, n+1)
-    dp[1] = 1
-    dp[2] = 2
-    
-    for i := 3; i <= n; i++ {
-        dp[i] = dp[i-1] + dp[i-2]
+
+    dpArr := make([]int, n)
+    dpArr[0] = 1
+    dpArr[1] = 2
+
+    for i:=2; i<n; i++{
+        dpArr[i] = dpArr[i-1]+ dpArr[i-2]
     }
-    
-    return dp[n]
+
+    return dpArr[n-1]
 }
