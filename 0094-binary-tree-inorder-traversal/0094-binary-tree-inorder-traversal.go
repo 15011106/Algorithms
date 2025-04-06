@@ -6,14 +6,31 @@
  *     Right *TreeNode
  * }
  */
+
  
 func inorderTraversal(root *TreeNode) []int {
+
+    ans := make([]int, 0)
+    ans = dfs(root, ans)
+
+    return ans
+}
+
+func dfs (root *TreeNode, arr []int) ([]int){
+
+    if root == nil{
+        return arr
+    }
+
+    if root.Left != nil{
+        arr = dfs(root.Left, arr)
+    }
+
+    arr = append(arr, root.Val)
     
-	result := []int{}
-	if root != nil {
-		result = append(result, inorderTraversal(root.Left)...)
-		result = append(result, root.Val)
-		result = append(result, inorderTraversal(root.Right)...)
-	}
-	return result
+    if root.Right != nil{
+        arr = dfs(root.Right, arr)
+    }
+
+    return arr
 }
