@@ -8,53 +8,45 @@
  */
 func findTarget(root *TreeNode, k int) bool {
     
-    if root == nil {
-            return false
-                }
+    arr := []int{}
+    var arrangedArr []int
 
-    queue := []*TreeNode{root}
-    key := make(map[int]bool)
+    arrangedArr = dfs(root, arr)
 
-    for len(queue) > 0 {
-        node := queue[0]
-        queue = queue[1:]
+    l, r := 0,len(arrangedArr)-1
 
-        if !key[node.Val]{
-            key[node.Val] = true
+    for l < r{
+        sum := arrangedArr[l] + arrangedArr[r]
+        if sum == k{
+            return true
         }
 
-        tempVal := 0
-
-        if node.Right != nil{
-
-            tempVal = k-node.Right.Val
-            if key[tempVal]{
-                return true
-            }
-            
-            if !key[node.Right.Val]{
-                key[node.Right.Val] = true
-            } 
-            
-            queue = append(queue, node.Right)
-
+        if sum > k{
+            r--  
+        }else{
+            l++
         }
+    }
 
-        if node.Left != nil{
+    return false
+}
 
-            tempVal = k-node.Left.Val
-            if key[tempVal]{
-                return true
-            }
 
-            if !key[node.Left.Val]{
-                key[node.Left.Val] = true
-            }
+func dfs(node *TreeNode, arr []int) (accArr []int){
+    
+    accArr = arr
+    if node == nil{
+        return accArr
+    }
 
-            queue = append(queue, node.Left)
+    if node.Left != nil{
+        accArr = dfs(node.Left, accArr)
+    }
 
-        }
-    } 
+    accArr = append(accArr, node.Val)
+    if node.Right != nil{
+        accArr = dfs(node.Right, accArr)
+    }
 
-    return false   
+    return accArr
 }
