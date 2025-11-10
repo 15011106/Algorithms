@@ -1,32 +1,25 @@
 func isPalindrome(s string) bool {
-    
-    var sArray []rune
-    for _,v := range s{
-        if (v >= 'a' && v <= 'z') || (v >= 'A' && v <= 'Z'){
-           sArray = append(sArray, unicode.ToLower(v)) 
-        }else if (v >= '0' && v <= '9'){
-        sArray = append(sArray, v) 
-        }
-    }
 
-
-    if len(sArray) == 1{
-        return true
-    }
-
-    p1 := 0
-    p2 := len(sArray)-1
+    var alphaStr strings.Builder
     ans := true
 
-    for p1 < p2{
-        if sArray[p1] == sArray[p2]{
-            p1++
-            p2--
-            continue
-        }else{
+    for _, v := range(s){
+        if isAlpha(byte(v)){
+            alphaStr.WriteString(string(v))
+        }
+    }
+    
+    str := strings.ToLower(alphaStr.String())
+    eIndex := len(str)-1
+    for i := 0 ; i <= eIndex; i++{
+        if str[i] != str[eIndex-i]{
             return false
         }
     }
 
     return ans
+}
+
+func isAlpha(c byte) bool{
+    return (c >= 'a' && c<= 'z') || (c >='A' && c <='Z') || (c >= '0' && c <= '9')
 }
