@@ -34,26 +34,38 @@ func reorderList(head *ListNode)  {
     rearNode := prevNode
     frontNode := head
 
-    tmpNode := head
-    flag := true
-    for tmpNode != slow{
+    
+        for rearNode.Next != nil {
+            tmpFrontNode := frontNode.Next
+            tmpRearNode := rearNode.Next
 
-        tmp := &ListNode{}
-        if flag{
-            tmp = frontNode.Next
             frontNode.Next = rearNode
+            rearNode.Next = tmpFrontNode
 
-            frontNode = tmp
-            tmpNode = rearNode
-            flag = false
-        }else{
-            tmp = rearNode.Next
-            rearNode.Next = frontNode
+            frontNode = tmpFrontNode
+            rearNode = tmpRearNode
+            }
 
-            rearNode = tmp
-            tmpNode = frontNode
-            flag = true
-        }
-    }
+    // tmpNode := head
+    // flag := true
+    // for tmpNode != slow{
+
+    //     tmp := &ListNode{}
+    //     if flag{
+    //         tmp = frontNode.Next
+    //         frontNode.Next = rearNode
+
+    //         frontNode = tmp
+    //         tmpNode = rearNode
+    //         flag = false
+    //     }else{
+    //         tmp = rearNode.Next
+    //         rearNode.Next = frontNode
+
+    //         rearNode = tmp
+    //         tmpNode = frontNode
+    //         flag = true
+    //     }
+    // }
 
 }
