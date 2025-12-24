@@ -1,15 +1,20 @@
 func twoSum(nums []int, target int) []int {
 
-      indexMap := make(map[int]int)
+    ans := []int{}
+    hash := make(map[int]int)
 
-    for i, num := range nums {
-        complement := target - num
-        
-        if index, ok := indexMap[complement]; ok {
-            return []int{index, i}
-        }
-        indexMap[num] = i
+    for i := 0 ;i<len(nums); i++{
+        hash[nums[i]] = i
     }
-    return []int{}
-    
+
+    for i := 0 ; i < len(nums);i++{
+
+        v, exist := hash[target - nums[i]]
+        if exist && hash[target - nums[i]] > i{
+            ans = []int{i,v}
+            break
+        }
+    }
+
+    return ans
 }
