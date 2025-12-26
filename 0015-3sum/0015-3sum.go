@@ -25,10 +25,15 @@ func threeSum(nums []int) [][]int {
                 j++
             }else{
                 arr = append(arr, []int{nums[i],nums[j],nums[k]})
+                
                 j++
-
+                k--
+                
                 for j < k && nums[j] == nums[j-1]{
                     j++
+                }
+                for j< k && nums[k] == nums[k+1]{
+                    k--
                 }
         }
     }
