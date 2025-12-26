@@ -1,34 +1,37 @@
+// 1. I think it don't requires (O^3)
+// 2. It seems It could be soloved by two pointers.
+
+
 func threeSum(nums []int) [][]int {
+
+    arr := [][]int{}
+    sort.Slice(nums, func(i, j int) bool{
+        return nums[i] < nums[j]
+    })
     
-    sort.Ints(nums)
-    ans := [][]int{}
+    for i :=0 ; i< len(nums)-2; i++{        
+        
+        if i > 0 && nums[i] == nums[i-1] {
+			continue
+		}
 
-    for i:=0; i<len(nums);i++{
-        if i>0 && nums[i] == nums[i-1]{
-            continue
-        }
-        mid, end := i+1, len(nums)-1
+        j := i+1
+        k := len(nums)-1
+    
+        for j < k{
+            if nums[i] + nums[j] + nums[k] > 0{
+                k--
+            }else if nums[i] + nums[j] + nums[k] < 0{
+                j++
+            }else{
+                arr = append(arr, []int{nums[i],nums[j],nums[k]})
+                j++
 
-        for mid < end{
-            sum :=nums[i]+ nums[mid] + nums[end]
-            if  sum == 0{
-                ans = append(ans, []int{nums[i],nums[mid],nums[end]})
-                mid++
-                end--
-
-                for mid < end && nums[mid] == nums[mid-1]{
-                    mid++
+                for j < k && nums[j] == nums[j-1]{
+                    j++
                 }
-                for mid < end && nums[end] == nums[end+1]{
-                    end--
-                }
-            }else if sum > 0{
-                end--
-            } else{
-                mid++
-            }
         }
     }
-
-    return ans
+    }
+    return arr   
 }
