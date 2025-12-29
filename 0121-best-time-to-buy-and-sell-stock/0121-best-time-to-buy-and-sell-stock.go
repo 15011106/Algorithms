@@ -1,19 +1,25 @@
+
+
+// 1. should it be ascend? to get maximum difference?
+// 2. How could I get maxProfit???
+
+
 func maxProfit(prices []int) int {
 
-    maxRight := len(prices)
-    left := 0 
-    ans := 0
-    
-    for right:=1; right<maxRight; right++{
-        if prices[right] < prices[left]{
-            left = right
-        }else{
-            currentProfit := prices[right] - prices[left]
-            if currentProfit > ans{
-                ans = currentProfit
-            }
+    min := prices[0]
+    maxProfit := 0
+
+    for i:=1; i < len(prices); i++{
+        
+        if min > prices[i]{
+            min = prices[i]
+            continue
+        }
+
+        if prices[i] - min > maxProfit{
+            maxProfit = prices[i] - min
         }
     }
 
-    return ans
+    return maxProfit
 }
