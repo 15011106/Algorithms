@@ -8,16 +8,21 @@
  */
 func invertTree(root *TreeNode) *TreeNode {
 
-    if root == nil{
-        return nil
+    var dfs func(root *TreeNode)
+    
+    dfs = func(node *TreeNode){
+        if node == nil{
+            return
+        }
+
+        node.Left, node.Right = node.Right, node.Left
+        dfs(node.Left)
+        dfs(node.Right)
+
+        return
     }
 
-    tmpNode := root.Left
-    root.Left = root.Right
-    root.Right = tmpNode
-
-    invertTree(root.Left)
-    invertTree(root.Right)
+    dfs(root)
 
     return root
 }
