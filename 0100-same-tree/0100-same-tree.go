@@ -6,37 +6,31 @@
  *     Right *TreeNode
  * }
  */
+
+ // 1. traversal twice
+
 func isSameTree(p *TreeNode, q *TreeNode) bool {
+    var dfs func(p, q *TreeNode) bool
+    
+    dfs = func(p, q *TreeNode) bool{    
+        if p == nil || q == nil{
+            if p != q{
+                return false
+            }
+            return true
+        }
 
-    arr1 := dfs(p)
-    arr2 := dfs(q)
-
-    if len(arr1) != len(arr2){
-        return false
-    }
-
-    for i :=0; i<len(arr1) ;i++{
-        if arr1[i] != arr2[i]{
+        if p.Val != q.Val{
             return false
         }
+
+        left := dfs(p.Left, q.Left)
+        right := dfs(p.Right,q.Right)
+
+        return left && right
     }
 
-    return true
-}
+    isSame := dfs(p,q)
 
-func dfs(curNode *TreeNode) []string{
-    if curNode == nil{
-        return []string{"null"}
-    }
-
-    
-    arr := []string{strconv.Itoa(curNode.Val)}
-
-    left := dfs(curNode.Left)
-    arr = append(arr,left...)
-    right := dfs(curNode.Right)
-    arr = append(arr,right...)
-    
-    return arr
-
+    return isSame
 }
