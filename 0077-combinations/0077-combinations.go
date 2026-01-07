@@ -1,6 +1,6 @@
 func combine(n int, k int) [][]int {
     res := make([][]int, 0)
-    arr := make([]int, 0, k)
+    arr := []int{}
 
     var dfs func(start int)
     dfs = func(start int) {
