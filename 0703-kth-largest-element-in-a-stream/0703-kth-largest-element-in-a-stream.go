@@ -1,45 +1,68 @@
-type MinHeap []int
-
-func (h MinHeap) Len() int           { return len(h) }
-func (h MinHeap) Less(i, j int) bool { return h[i] < h[j] }
-func (h MinHeap) Swap(i, j int)      { h[i], h[j] = h[j], h[i] }
-
-func (h *MinHeap) Push(x interface{}) {
-	*h = append(*h, x.(int))
-}
-
-func (h *MinHeap) Pop() interface{} {
-	old := *h
-	n := len(old)
-	x := old[n-1]
-	*h = old[0 : n-1]
-	return x
-}
-
 type KthLargest struct {
-	k    int
-	heap *MinHeap
+    k int
+    minHeap intHeap
 }
+
+type intHeap struct{
+    minHeap []int
+}
+
+func (intHeap intHeap) Len() int{
+    return len(intHeap.minHeap)
+}
+
+func (intHeap intHeap) Less(i,j int) bool{
+    return intHeap.minHeap[i] < intHeap.minHeap[j]
+} 
+
+func (intHeap intHeap) Swap(i, j int){
+    intHeap.minHeap[i], intHeap.minHeap[j] = intHeap.minHeap[j], intHeap.minHeap[i]
+}
+
+func (intHeap *intHeap) Pop() any{
+
+    old := intHeap.minHeap
+    n := len(old)
+    x := old[n-1]
+    intHeap.minHeap = old[0:n-1]
+    return x
+}
+
+func (intHeap *intHeap) Push(x any){
+    intHeap.minHeap = append(intHeap.minHeap, x.(int))
+}
+
 
 func Constructor(k int, nums []int) KthLargest {
-	h := &MinHeap{}
-	heap.Init(h)
-	kthLargest := KthLargest{k, h}
 
-	for _, num := range nums {
-		kthLargest.Add(num)
-	}
+    minHeap := intHeap{minHeap: []int{}}
+    kthLargest := KthLargest{k, minHeap}
+    heap.Init(&kthLargest.minHeap)
 
-	return kthLargest
+    for i :=0 ;i<len(nums); i++{
+        heap.Push(&kthLargest.minHeap, nums[i])
+        if kthLargest.minHeap.Len() > kthLargest.k{
+            heap.Pop(&kthLargest.minHeap)
+        }
+    }
+
+    return kthLargest
 }
+
 
 func (this *KthLargest) Add(val int) int {
-	if this.heap.Len() < this.k {
-		heap.Push(this.heap, val)
-	} else if val > (*this.heap)[0] {
-		(*this.heap)[0] = val
-		heap.Fix(this.heap, 0)
-	}
 
-	return (*this.heap)[0]
+    heap.Push(&this.minHeap, val)
+    if this.minHeap.Len() > this.k{
+        heap.Pop(&this.minHeap)
+    }
+
+    return this.minHeap.minHeap[0]
 }
+
+
+/**
+ * Your KthLargest object will be instantiated and called as such:
+ * obj := Constructor(k, nums);
+ * param_1 := obj.Add(val);
+ */
