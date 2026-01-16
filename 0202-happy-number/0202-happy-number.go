@@ -1,20 +1,25 @@
-func sumOfSquares(n int) int {
-    sum := 0
-    for n > 0 {
-        digit := n % 10
-        sum += digit * digit
-        n /= 10
-    }
-    return sum
-}
+func isHappy(n int) bool{
 
-func isHappy(n int) bool {
-    seen := map[int]bool{}
-    
-    for n != 1 && !seen[n] {
-        seen[n] = true
-        n = sumOfSquares(n)
+    x := make(map[int]int)
+     
+    for {
+        sum := 0
+        for n > 0{
+            f := n % 10
+            sum += (f*f)
+            n = n/10
+           }
+
+           fmt.Println(sum)
+            if sum == 1{
+                break;
+            }
+        x[sum]++
+        if x[sum] > 1{
+            return false
+        }
+        n = sum
     }
-    
-    return n == 1
+
+    return true
 }
