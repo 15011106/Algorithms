@@ -1,18 +1,15 @@
 func missingNumber(nums []int) int {
 
     lengNums := len(nums)
-    ans := 0
-    sort.Slice(nums, func(i, j int) bool{
-        return nums[i] < nums[j]
-    })
+    x := 0
     
-    for i,v := range nums{
-        if v != i{
-            ans = i
-            break;
-        }
-        ans = lengNums
+    for i:=0 ;i < lengNums + 1 ;i++{
+        x ^= i
     }
 
-    return ans
+    for _, v:= range nums{
+        x ^= v
+    }
+
+    return x
 }
