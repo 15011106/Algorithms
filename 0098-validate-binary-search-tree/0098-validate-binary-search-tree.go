@@ -9,17 +9,17 @@
 func isValidBST(root *TreeNode) bool {
 
 
-    var dfs func(node *TreeNode, min, max *int) bool
-    dfs = func(node *TreeNode, min, max *int) bool{
+    var dfs func(node *TreeNode, min, max int) bool
+    dfs = func(node *TreeNode, min, max int) bool{
         if node == nil{
             return true
         }
 
-       if min != nil && node.Val <= *min { return false }
-       if max != nil && node.Val >= *max { return false }
+       if node.Val <= min { return false }
+       if node.Val >= max { return false }
 
-        return dfs(node.Left, min, &node.Val) && dfs(node.Right, &node.Val, max)
+        return dfs(node.Left, min, node.Val) && dfs(node.Right, node.Val, max)
     }
 
-    return dfs(root, nil, nil)
+    return dfs(root, math.MinInt64, math.MaxInt64)
 }
