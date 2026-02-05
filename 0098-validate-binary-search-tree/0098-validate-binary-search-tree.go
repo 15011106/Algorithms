@@ -7,30 +7,19 @@
  * }
  */
 func isValidBST(root *TreeNode) bool {
-    
-    var prev *TreeNode
-    ans := true
-    var dfs func(*TreeNode)
 
-    dfs = func(cur *TreeNode){
-        if cur == nil{
-            return
-        }
-    
-        dfs(cur.Left)
-        
-        if prev != nil{
-            if prev.Val >= cur.Val{
-                ans = false
-                return
-            }
-        }
-        prev = cur   
 
-        dfs(cur.Right)
+    var dfs func(node *TreeNode, min, max *int) bool
+    dfs = func(node *TreeNode, min, max *int) bool{
+        if node == nil{
+            return true
+        }
+
+       if min != nil && node.Val <= *min { return false }
+       if max != nil && node.Val >= *max { return false }
+
+        return dfs(node.Left, min, &node.Val) && dfs(node.Right, &node.Val, max)
     }
 
-    dfs(root)
-
-    return ans
+    return dfs(root, nil, nil)
 }
