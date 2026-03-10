@@ -1,15 +1,14 @@
 func checkValidString(s string) bool {
 
-    var lp  stack[int]
-    var star stack[int]
-
-
-    for i,v := range s{
+    var lp  stack[rune]
+    var star stack[rune]
+    
+    for _,v := range s{
 
         if v == '('{
-            lp.push(i)
+            lp.push(v)
         }else if v == '*'{
-            star.push(i)
+            star.push(v)
         }else{
             if !lp.isEmpty(){
                 lp.pop()
@@ -27,17 +26,11 @@ func checkValidString(s string) bool {
         return true
     }
 
-    for !lp.isEmpty() && !star.isEmpty(){
-
-        l := lp.pop()
-        st := star.pop()
-
-        if l > st{
-            return false
-        }
+    if len(star.data) < len(lp.data){
+        return false
     }
 
-    return lp.isEmpty()
+    return true
 }
 
 type stack [T any] struct{
